@@ -35,10 +35,10 @@
                             <h3 class="panel-title">Deja tu Comentario</h3>
                         </div>
                         <div class="panel-body">
-                            <form action="./funciones/guardarpost.php" method="POST">
+                            <form action="index.php" method="POST">
                                 <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" class="form-control" name="post_name" id="nombre" placeholder="Nombre">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" name="post_name" id="nombre" placeholder="Nombre">
                                 </div>
                                 <div class="form-group">
                                     <label for="comentario">Comentario</label>
@@ -57,30 +57,35 @@
                         </div>
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">Este es mi comentario</h4>
-                                    <p class="list-group-item-text">Aqui va todo lo que comente</p>
-                                </a>
-                                <a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">Este es mi comentario</h4>
-                                    <p class="list-group-item-text">Aqui va todo lo que comente</p>
-                                </a>
-                                <a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">Este es mi comentario</h4>
-                                    <p class="list-group-item-text">Aqui va todo lo que comente</p>
-                                </a><a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">Este es mi comentario</h4>
-                                    <p class="list-group-item-text">Aqui va todo lo que comente</p>
-                                </a>
-                                <a href="#" class="list-group-item active">
-                                    <h4 class="list-group-item-heading">Este es mi comentario</h4>
-                                    <p class="list-group-item-text">Aqui va todo lo que comente</p>
-                                </a>
+                                <?php
+                                $mysqli = new mysqli("localhost", "root", "", "miweb_db");
 
+                                /* check connection */
+                                if (mysqli_connect_errno()) {
+                                    printf("Error de conexión: %s\n", mysqli_connect_error());
+                                    exit();
+                                }
+                                //creamos el Query
+                                $query = "SELECT * FROM posts";
+                                $result = $mysqli->query($query);
+                                /* close connection */
+                                while ($row = $result->fetch_object()) {
+                                    ?>
+
+                                    <a href="#" class="list-group-item active">
+                                        <h4 class="list-group-item-heading"><?php echo $row->post_name; ?></h4>
+                                        <p class="list-group-item-text"><?php echo $row->post_comment; ?></p>
+                                        <a href="funciones/form_editar.php?id=<?php echo $row->post_id; ?>" class="btn btn-block btn-warning">Editar</a><a onclick="confirmDel()" href="funciones/eliminar_post.php?id=<?php echo $row->post_id; ?>" class="btn btn-block btn-danger" href="">Eliminar</a>
+                                    </a>
+
+                                    <?php
+                                }
+
+                                $mysqli->close();
+                                ?>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -96,5 +101,14 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="./assets/templates/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
         <script src="./assets/templates/mdl/material.min.js" type="text/javascript"></script>
-    </body>
-</html>
+        <script language="Javascript">
+            function confirmDel(){
+                var agree = confirm("¿Realmente desea eliminarlo? ");
+                if (agree){
+                    return true;
+                }else{
+                    return false;
+                }                  
+                
+            }
+        </script>

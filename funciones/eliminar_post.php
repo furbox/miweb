@@ -1,12 +1,7 @@
 <?php
 
 //guardamos los valores que llegan por post
-$nombre = $_POST['post_name'];
-$comentario = $_POST['post_comment'];
-
-//guardamos el valor de la fecha en formato mysql
-$fecha = date('Y-m-d H:i:s');
-
+$id = $_GET['id'];
 //creamos una instancia de la coneccion de mysql  host,user,pass,nombredb
 $mysqli = new mysqli("localhost", "root", "", "miweb_db");
 
@@ -16,10 +11,10 @@ if (mysqli_connect_errno()) {
     exit();
 }
 //creamos el Query
-$query = "INSERT INTO posts VALUES (NULL, '$nombre', '$comentario', '$fecha')";
+$query = "DELETE FROM posts WHERE post_id=$id";
 $mysqli->query($query);
 
-$id = $mysqli->insert_id;
+$id = $mysqli->affected_rows;
 
 /* close connection */
 $mysqli->close();
