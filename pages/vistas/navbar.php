@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Mi web</a>
+            <a class="navbar-brand" href="#"><?php echo APP_NAME; ?></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -30,17 +30,23 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
+                <?php 
+                    if(@$_SESSION['is_logged_in']):
+                ?>                
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['user_email']; ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a href="<?php echo BASE_URL;?>index.php?page=auth/signout">Salir</a></li>
                     </ul>
                 </li>
+                <?php else: ?>
+                <li><a href="<?php echo BASE_URL; ?>index.php?page=auth/login">Iniciar Sesion</a></li>
+                <li><a href="<?php echo BASE_URL; ?>index.php?page=auth/registro">Registrase</a></li>
+                <?php endif; ?>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
